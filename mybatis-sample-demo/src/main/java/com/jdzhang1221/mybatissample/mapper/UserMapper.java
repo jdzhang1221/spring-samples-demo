@@ -42,4 +42,41 @@ public interface UserMapper {
     List<SysRole> selectRolesByUserIdAndRoleEnabled(@Param("userId") Long userId, @Param("enabled") Integer enabled);
 
     List<SysRole> selectRolesByUserAndRole(@Param("user") SysUser user, @Param("role") SysRole role);
+
+    /**
+     * 新增用户
+     * @param sysUser
+     * @return
+     */
+    int insert(SysUser sysUser);
+
+    /**
+     * 新增用户-使用userGeneratedKeys方式
+     * @param sysUser
+     * @return
+     */
+    int insertUseGeneratedKeys(SysUser sysUser);
+
+    /**
+     * 新增用户-使用selectKey方式
+     * @param sysUser
+     * @return
+     */
+    int insertUseSelectKey(SysUser sysUser);
+
+    /**
+     * 根据主键更新
+     * @param sysUser
+     * @return
+     */
+    int updateById(SysUser sysUser);
+
+    /**
+     * 通过主键删除
+     * @param id
+     * @return
+     */
+    int deleteById(Long id);
+
+    int deleteById(SysUser sysUser);
 }

@@ -10,8 +10,43 @@
         <result property="userEmail" column="user_email"/>
         <result property="userInfo" column="user_info"/>
         <result property="headImg" column="head_img" jdbcType="BLOB"/>
-        <result property="creteTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <insert id="insert">
+        INSERT INTO sys_user (id,user_name,user_password, user_email, user_info, head_img,create_time )
+        VALUES
+        	(#{id},#{userName},#{userPassword},#{userEmail},
+        #{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertUseGeneratedKeys" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user (id,user_name,user_password, user_email, user_info, head_img,create_time )
+        VALUES
+        	(#{id},#{userName},#{userPassword},#{userEmail},
+        #{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertUseSelectKey">
+        INSERT INTO sys_user (id,user_name,user_password, user_email, user_info, head_img,create_time )
+        VALUES
+        	(#{id},#{userName},#{userPassword},#{userEmail},
+        #{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP})
+        <selectKey keyProperty="id" resultType="long" keyColumn="id" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <update id="updateById">
+        UPDATE sys_user
+        SET user_name = #{userName},
+        user_password = #{userPassword},
+        user_email = #{userEmail},
+        user_info = #{userInfo},
+        head_img = #{headImg,jdbcType=BLOB},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        WHERE
+        	id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from sys_user where id=#{id}
+    </delete>
 
     <select id="selectById" resultMap="usermap">
         select * from sys_user where id=#{id}
@@ -34,7 +69,7 @@
         	r.enabled,
         	r.create_by createBy,
         	r.create_time createTime,
-        	u.user_name userName
+        	u.user_name as "sysUser.userName"
         FROM
         	sys_user u
         	INNER JOIN sys_user_role ur ON u.id = ur.user_id

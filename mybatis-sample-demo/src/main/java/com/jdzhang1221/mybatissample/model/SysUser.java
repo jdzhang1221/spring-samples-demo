@@ -41,7 +41,15 @@ public class SysUser {
     /**
      * 创建时间
      */
-    private Date creteTime;
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Long getId() {
         return id;
@@ -91,11 +99,4 @@ public class SysUser {
         this.headImg = headImg;
     }
 
-    public Date getCreteTime() {
-        return creteTime;
-    }
-
-    public void setCreteTime(Date creteTime) {
-        this.creteTime = creteTime;
-    }
 }
