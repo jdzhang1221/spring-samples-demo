@@ -7,6 +7,8 @@
  */
 package com.jdzhang1221.mybatissample.mapper;
 
+import com.jdzhang1221.mybatissample.model.SysRole;
+import com.jdzhang1221.mybatissample.model.SysRoleExtend;
 import com.jdzhang1221.mybatissample.model.SysUser;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -53,6 +55,48 @@ public class UserMapperTest extends BaseMapperTest {
         } finally {
             sqlSession.close();
         }
+    }
 
+    @Test
+    public void testSelectRoleByUserId(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            List<SysRoleExtend> sysRoleList= userMapper.selectRoleByUserId(1L);
+            Assert.assertNotNull(sysRoleList);
+            Assert.assertTrue(sysRoleList.size()>0);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectRolesByUserIdAndRoleEnabled(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            List<SysRole> sysRoleList= userMapper.selectRolesByUserIdAndRoleEnabled(1L,1);
+            Assert.assertNotNull(sysRoleList);
+            Assert.assertTrue(sysRoleList.size()>0);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectRolesByUserAndRole(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            SysUser sysUser=new SysUser();
+            sysUser.setId(1L);
+            SysRole sysRole=new SysRole();
+            sysRole.setEnabled(1);
+            List<SysRole> sysRoleList= userMapper.selectRolesByUserAndRole(sysUser,sysRole);
+            Assert.assertNotNull(sysRoleList);
+            Assert.assertTrue(sysRoleList.size()>0);
+        } finally {
+            sqlSession.close();
+        }
     }
 }

@@ -34,6 +34,28 @@ public class SysRole {
      * 创建时间
      */
     private Date createTime;
+//    /**
+//     * 用户名
+//     */
+//    private String userName;
+//
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String userName) {
+//        this.userName = userName;
+//    }
+
+//    private SysUser sysUser;
+//
+//    public SysUser getSysUser() {
+//        return sysUser;
+//    }
+//
+//    public void setSysUser(SysUser sysUser) {
+//        this.sysUser = sysUser;
+//    }
 
     public Long getId() {
         return id;
