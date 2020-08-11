@@ -29,7 +29,10 @@ public class SysRole {
     /**
      * 创建人
      */
-    private Long createby;
+    private Long createBy;
+
+
+
     /**
      * 创建时间
      */
@@ -81,14 +84,13 @@ public class SysRole {
         this.enabled = enabled;
     }
 
-    public Long getCreateby() {
-        return createby;
+    public Long getCreateBy() {
+        return createBy;
     }
 
-    public void setCreateby(Long createby) {
-        this.createby = createby;
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
     }
-
     public Date getCreateTime() {
         return createTime;
     }
