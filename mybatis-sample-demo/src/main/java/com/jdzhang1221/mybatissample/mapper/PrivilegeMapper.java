@@ -7,9 +7,18 @@
  */
 package com.jdzhang1221.mybatissample.mapper;
 
+import com.jdzhang1221.mybatissample.model.SysPrivilege;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+
+import java.lang.reflect.Type;
+
 /**
  * @author zhangjundong
  * @date 2020/8/922:56
  */
 public interface PrivilegeMapper {
+
+    @SelectProvider(type=PrivilegeProvider.class,method = "selectById")
+    SysPrivilege selectById(Long id);
 }
