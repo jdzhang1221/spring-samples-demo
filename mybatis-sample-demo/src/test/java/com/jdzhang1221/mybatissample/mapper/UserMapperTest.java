@@ -10,6 +10,7 @@ package com.jdzhang1221.mybatissample.mapper;
 import com.jdzhang1221.mybatissample.model.SysRole;
 import com.jdzhang1221.mybatissample.model.SysRoleExtend;
 import com.jdzhang1221.mybatissample.model.SysUser;
+import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
@@ -224,6 +225,74 @@ public class UserMapperTest extends BaseMapperTest {
             Assert.assertNull(userMapper.selectById(1001L));
         } finally {
             sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectByUser(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            //只按用户名查询
+            SysUser sysUser=new SysUser();
+            sysUser.setUserName("ad");
+            List<SysUser> sysUserList= userMapper.selectByUser(sysUser);
+            Assert.assertTrue(sysUserList.size()>0);
+            //只按邮箱查询
+            sysUser=new SysUser();
+            sysUser.setUserEmail("test@mybatis.tk");
+            sysUserList=userMapper.selectByUser(sysUser);
+            Assert.assertTrue(sysUserList.size()>0);
+            //同时按用户名和邮箱查询
+            sysUser=new SysUser();
+            sysUser.setUserName("ad");
+            sysUser.setUserEmail("test@mybatis.tk");
+            sysUserList=userMapper.selectByUser(sysUser);
+            Assert.assertTrue(sysUserList.size()==0);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testUpdateByIdSelective(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            SysUser sysUser=new SysUser();
+            //更新id=1的用户
+            sysUser.setId(1L);
+            //修改邮箱
+            sysUser.setUserEmail("test@mybatis.tk");
+            int result= userMapper.updateByIdSelective(sysUser);
+            Assert.assertEquals(1,result);
+            //查询id=1的用户
+            sysUser=userMapper.selectById(1L);
+            //修改后的名字没有变，但是邮箱变了
+            Assert.assertEquals("admin",sysUser.getUserName());
+            Assert.assertEquals("test@mybatis.tk",sysUser.getUserEmail());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testInsertSelective(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            SysUser sysUser=new SysUser();
+            sysUser.setUserName("test_selective");
+            sysUser.setUserPassword("123456");
+            sysUser.setUserInfo("test_userinfo");
+            sysUser.setCreateTime(new Date());
+            userMapper.insertSelective(sysUser);
+            //获取刚刚插入的数据
+            sysUser=userMapper.selectById(sysUser.getId());
+            //因为没有指定userEmail，所以使用数据库的默认值
+            Assert.assertEquals("test@mybatis.tk",sysUser.getUserEmail());
+        } finally {
             sqlSession.close();
         }
     }

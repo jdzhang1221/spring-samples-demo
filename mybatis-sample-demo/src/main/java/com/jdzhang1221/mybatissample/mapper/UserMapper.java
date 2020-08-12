@@ -79,4 +79,24 @@ public interface UserMapper {
     int deleteById(Long id);
 
     int deleteById(SysUser sysUser);
+
+    /**
+     * 根据动态条件查询用户信息
+     * @return
+     */
+    List<SysUser> selectByUser(SysUser sysUser);
+
+    /**
+     * 根据主键选择性更新用户信息
+     * @param sysUser
+     * @return
+     */
+    int updateByIdSelective(SysUser sysUser);
+
+    /**
+     * 根据传入的参数值动态插入列
+     * @param sysUser
+     * @return
+     */
+    int insertSelective(SysUser sysUser);
 }

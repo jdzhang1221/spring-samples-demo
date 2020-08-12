@@ -27,11 +27,24 @@
     <insert id="insertUseSelectKey">
         INSERT INTO sys_user (id,user_name,user_password, user_email, user_info, head_img,create_time )
         VALUES
-        	(#{id},#{userName},#{userPassword},#{userEmail},
+        (#{id},#{userName},#{userPassword},#{userEmail},
         #{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP})
         <selectKey keyProperty="id" resultType="long" keyColumn="id" order="AFTER">
             select LAST_INSERT_ID()
         </selectKey>
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user(user_name,user_password,
+        <if test="userEmail!=null and userEmail!=''">
+            user_email,
+        </if>
+        user_info,head_img,create_time
+        ) values (#{userName},#{userPassword},
+        <if test="userEmail!=null and userEmail!=''">
+            #{userEmail},
+        </if>
+        #{userInfo},#{headImg,jdbcType=BLOB},#{createTime,jdbcType=TIMESTAMP}
+        )
     </insert>
     <update id="updateById">
         UPDATE sys_user
@@ -43,6 +56,29 @@
         create_time = #{createTime,jdbcType=TIMESTAMP}
         WHERE
         	id = #{id}
+    </update>
+    <update id="updateByIdSelective">
+        update sys_user set
+        <if test="userName!=null and userName!=''">
+            user_name=#{userName},
+        </if>
+        <if test="userPassword!=null and userPassword!=''">
+            user_password=#{userPassword},
+        </if>
+        <if test="userEmail!=null and userEmail!=''">
+            user_email=#{userEmail},
+        </if>
+        <if test="userInfo!=null and userInfo!=''">
+            user_info=#{userInfo},
+        </if>
+        <if test="headImg!=null">
+            head_img=#{headImg,jdbcType=BLOB},
+        </if>
+        <if test="createTime!=null">
+            create_time=#{createTime,jdbcType=TIMESTAMP},
+        </if>
+        id=#{id}
+        where id=#{id}
     </update>
     <delete id="deleteById">
         delete from sys_user where id=#{id}
@@ -104,5 +140,23 @@
         	INNER JOIN sys_role r ON ur.role_id = r.id
         WHERE
         	u.id = #{user.id} and r.enabled=#{role.enabled}
+    </select>
+    <select id="selectByUser" resultType="com.jdzhang1221.mybatissample.model.SysUser">
+        SELECT
+        id,
+        user_name userName,
+        user_password userPassword,
+        user_email userEmail,
+        create_time createTime
+        FROM
+        sys_user
+        WHERE
+        1 = 1
+        <if test="userName!=null and userName!=''">
+            AND user_name like CONCAT('%',#{userName},'%')
+        </if>
+        <if test="userEmail!=null and userEmail!=''">
+            AND user_email =#{userEmail}
+        </if>
     </select>
 </mapper>
