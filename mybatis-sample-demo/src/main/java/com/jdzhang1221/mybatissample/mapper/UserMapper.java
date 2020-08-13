@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import javax.management.relation.Role;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhangjundong
@@ -119,4 +120,32 @@ public interface UserMapper {
      * @return
      */
     int updateByIdSelectiveSet(SysUser sysUser);
+
+    /**
+     * 根据用户id集合查询用户
+     * @param idList
+     * @return
+     */
+    List<SysUser> selectByIdList(@Param("idList") List<Long> idList);
+
+    /**
+     * 根据用户id数组查询用户
+     * @param idArray
+     * @return
+     */
+    List<SysUser> selectByIdArray(Long[] idArray);
+
+    /**
+     * 批量插入用户信息
+     * @param userList
+     * @return
+     */
+    int insertList(List<SysUser> userList);
+
+    /**
+     * 通过map更新列
+     * @param map
+     * @return
+     */
+    int updateByMap(@Param("userMap") Map<String,Object> map);
 }
