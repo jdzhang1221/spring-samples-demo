@@ -296,4 +296,72 @@ public class UserMapperTest extends BaseMapperTest {
             sqlSession.close();
         }
     }
+
+    @Test
+    public void testSelectByIdOrUserName(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            //按id查询
+            SysUser query=new SysUser();
+            query.setId(1L);
+            query.setUserName("admin");
+            SysUser sysUser= userMapper.selectByIdOrUserName(query);
+            Assert.assertNotNull(sysUser);
+            //按userName查询
+            query.setId(null);
+            sysUser=userMapper.selectByIdOrUserName(query);
+            Assert.assertNotNull(sysUser);
+            //id 和 userName 都为空
+            query.setUserName(null);
+            sysUser=userMapper.selectByIdOrUserName(query);
+            Assert.assertNull(sysUser);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectByUserWhere(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            //只按用户名查询
+            SysUser query=new SysUser();
+            query.setUserName("ad");
+            List<SysUser> sysUserList= userMapper.selectByUserWhere(query);
+            Assert.assertNotNull(sysUserList);
+            //按userName查询
+            query=new SysUser();
+            query.setUserEmail("admin@mybatis.tk");
+            sysUserList=userMapper.selectByUserWhere(query);
+            Assert.assertNotNull(sysUserList);
+            //id 和 userName 都为空
+            query=new SysUser();
+            query.setUserName("ad");
+            query.setUserEmail("test@mybatis.tk");
+            sysUserList=userMapper.selectByUserWhere(query);
+            Assert.assertTrue(sysUserList.size()==0);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testUpdateByIdSelectiveSet(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            SysUser sysUser= userMapper.selectById(1L);
+            sysUser.setUserEmail("test@mybatis.tk");
+            int result= userMapper.updateByIdSelectiveSet(sysUser);
+            Assert.assertEquals(1,result);
+
+            sysUser=userMapper.selectById(1L);
+            Assert.assertEquals("admin",sysUser.getUserName());
+            Assert.assertEquals("test@mybatis.tk",sysUser.getUserEmail());
+        } finally {
+            sqlSession.close();
+        }
+    }
 }

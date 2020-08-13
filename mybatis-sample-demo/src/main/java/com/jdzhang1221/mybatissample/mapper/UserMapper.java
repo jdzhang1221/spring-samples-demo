@@ -99,4 +99,24 @@ public interface UserMapper {
      * @return
      */
     int insertSelective(SysUser sysUser);
+
+    /**
+     * 根据用户Id或用户名查询
+     * @param sysUser
+     * @return
+     */
+    SysUser selectByIdOrUserName(SysUser sysUser);
+
+    /**
+     * 根据动态条件查询用户信息
+     * @param sysUser
+     * @return
+     */
+    List<SysUser> selectByUserWhere(SysUser sysUser);
+
+    /**
+     * 根据主键选择性更新用户信息
+     * @return
+     */
+    int updateByIdSelectiveSet(SysUser sysUser);
 }
