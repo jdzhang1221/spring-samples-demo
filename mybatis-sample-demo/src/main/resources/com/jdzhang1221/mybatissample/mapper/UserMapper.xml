@@ -114,12 +114,12 @@
         where id=#{id}
     </update>
     <!--<update id="updateByMap">-->
-        <!--update sys_user-->
-        <!--set-->
-        <!--<foreach collection="_parameter" item="val" index="key" separator=",">-->
-            <!--${key}=#{val}-->
-        <!--</foreach>-->
-        <!--where id=#{id}-->
+    <!--update sys_user-->
+    <!--set-->
+    <!--<foreach collection="_parameter" item="val" index="key" separator=",">-->
+    <!--${key}=#{val}-->
+    <!--</foreach>-->
+    <!--where id=#{id}-->
     <!--</update>-->
     <update id="updateByMap">
         update sys_user
@@ -271,37 +271,37 @@
         </foreach>
     </select>
     <!--<resultMap id="userRoleMap" type="com.jdzhang1221.mybatissample.model.SysUserExtend">-->
-        <!--<id property="id" column="id"/>-->
-        <!--<result property="userName" column="user_name"/>-->
-        <!--<result property="userPassword" column="user_password"/>-->
-        <!--<result property="userEmail" column="user_email"/>-->
-        <!--<result property="userInfo" column="user_info"/>-->
-        <!--<result property="headImg" column="head_img" jdbcType="BLOB"/>-->
-        <!--<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
-        <!--&lt;!&ndash;role相关属性&ndash;&gt;-->
-        <!--<result property="sysRole.id" column="role_id"/>-->
-        <!--<result property="sysRole.roleName" column="role_role_name"/>-->
-        <!--<result property="sysRole.enabled" column="role_enabled"/>-->
-        <!--<result property="sysRole.createBy" column="role_create_by"/>-->
-        <!--<result property="sysRole.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>-->
+    <!--<id property="id" column="id"/>-->
+    <!--<result property="userName" column="user_name"/>-->
+    <!--<result property="userPassword" column="user_password"/>-->
+    <!--<result property="userEmail" column="user_email"/>-->
+    <!--<result property="userInfo" column="user_info"/>-->
+    <!--<result property="headImg" column="head_img" jdbcType="BLOB"/>-->
+    <!--<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
+    <!--&lt;!&ndash;role相关属性&ndash;&gt;-->
+    <!--<result property="sysRole.id" column="role_id"/>-->
+    <!--<result property="sysRole.roleName" column="role_role_name"/>-->
+    <!--<result property="sysRole.enabled" column="role_enabled"/>-->
+    <!--<result property="sysRole.createBy" column="role_create_by"/>-->
+    <!--<result property="sysRole.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>-->
     <!--</resultMap>-->
 
     <!--<resultMap id="userRoleMap" type="com.jdzhang1221.mybatissample.model.SysUserExtend" extends="usermap">-->
-        <!--<result property="sysRole.id" column="role_id"/>-->
-        <!--<result property="sysRole.roleName" column="role_role_name"/>-->
-        <!--<result property="sysRole.enabled" column="role_enabled"/>-->
-        <!--<result property="sysRole.createBy" column="role_create_by"/>-->
-        <!--<result property="sysRole.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>-->
+    <!--<result property="sysRole.id" column="role_id"/>-->
+    <!--<result property="sysRole.roleName" column="role_role_name"/>-->
+    <!--<result property="sysRole.enabled" column="role_enabled"/>-->
+    <!--<result property="sysRole.createBy" column="role_create_by"/>-->
+    <!--<result property="sysRole.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>-->
     <!--</resultMap>-->
 
     <!--<resultMap id="userRoleMap" type="com.jdzhang1221.mybatissample.model.SysUserExtend" extends="usermap">-->
-        <!--<association property="sysRole" columnPrefix="role_" javaType="com.jdzhang1221.mybatissample.model.SysRole">-->
-            <!--<result property="id" column="id"/>-->
-            <!--<result property="roleName" column="role_name"/>-->
-            <!--<result property="enabled" column="enabled"/>-->
-            <!--<result property="createBy" column="create_by"/>-->
-            <!--<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
-        <!--</association>-->
+    <!--<association property="sysRole" columnPrefix="role_" javaType="com.jdzhang1221.mybatissample.model.SysRole">-->
+    <!--<result property="id" column="id"/>-->
+    <!--<result property="roleName" column="role_name"/>-->
+    <!--<result property="enabled" column="enabled"/>-->
+    <!--<result property="createBy" column="create_by"/>-->
+    <!--<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
+    <!--</association>-->
     <!--</resultMap>-->
 
     <resultMap id="userRoleMap" type="com.jdzhang1221.mybatissample.model.SysUserExtend" extends="usermap">
@@ -325,4 +325,26 @@
         inner join sys_role r on ur.role_id=r.id
         where u.id=#{id}
     </select>
+
+    <resultMap id="userRoleMapSelect" type="com.jdzhang1221.mybatissample.model.SysUserExtend" extends="usermap">
+        <association property="sysRole"
+                     fetchType="lazy"
+                     select="com.jdzhang1221.mybatissample.mapper.RoleMapper.selectRoleById"
+                     column="id={role_id}"/>
+    </resultMap>
+    <select id="selectUserAndRoleByIdSelect" resultMap="userRoleMapSelect">
+        select u.id,
+        u.user_name,
+        u.user_password,
+        u.user_email,
+        u.user_info,
+        u.head_img,
+        u.create_time,
+        ur.role_id
+        from sys_user u
+        inner join sys_user_role ur on u.id=ur.user_id
+        where u.id=#{id}
+    </select>
+    <!--column="id={role_id}".这里的id就是 com.jdzhang1221.mybatissample.mapper.RoleMapper.selectRoleById需要的参数名称，
+    role_id是参数值，名称要和上面查询中的最后一列保持一致-->
 </mapper>
