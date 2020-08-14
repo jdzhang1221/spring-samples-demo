@@ -7,6 +7,8 @@
  */
 package com.jdzhang1221.mybatissample.model;
 
+import java.util.List;
+
 /**
  * @author zhangjundong
  * @date 2020/8/1410:18
@@ -23,5 +25,18 @@ public class SysUserExtend extends SysUser {
 
     public void setSysRole(SysRole sysRole) {
         this.sysRole = sysRole;
+    }
+
+    /**
+     * 用户角色的集合
+     */
+    private List<SysRole> sysRoleList;
+
+    public List<SysRole> getSysRoleList() {
+        return sysRoleList;
+    }
+
+    public void setSysRoleList(List<SysRole> sysRoleList) {
+        this.sysRoleList = sysRoleList;
     }
 }

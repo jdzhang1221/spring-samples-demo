@@ -467,4 +467,22 @@ public class UserMapperTest extends BaseMapperTest {
             sqlSession.close();
         }
     }
+
+    @Test
+    public void testSelectAllUserAndRoles(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            List<SysUserExtend> sysUserExtendList= userMapper.selectAllUserAndRoles();
+            System.out.println("用户数"+sysUserExtendList.size());
+            for (SysUserExtend sysUserExtend:sysUserExtendList){
+                System.out.println("用户名"+sysUserExtend.getUserName());
+                for (SysRole sysRole:sysUserExtend.getSysRoleList()){
+                    System.out.println("角色名"+sysRole.getRoleName());
+                }
+            }
+        } finally {
+            sqlSession.close();
+        }
+    }
 }
