@@ -10,6 +10,7 @@ package com.jdzhang1221.mybatissample.mapper;
 import com.jdzhang1221.mybatissample.model.SysRole;
 import com.jdzhang1221.mybatissample.model.SysRoleExtend;
 import com.jdzhang1221.mybatissample.model.SysUser;
+import com.jdzhang1221.mybatissample.model.SysUserExtend;
 import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -429,6 +430,20 @@ public class UserMapperTest extends BaseMapperTest {
             SysUser sysUser=userMapper.selectById(1L);
             Assert.assertEquals("test@mybatis.tk",sysUser.getUserEmail());
             Assert.assertEquals("12345678",sysUser.getUserPassword());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleByIdResultType(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            //注意这里使用1001这个用户，因为这个用户只有一个角色
+            SysUserExtend sysUserExtend=userMapper.selectUserAndRoleByIdResultMap(1001L);
+            Assert.assertNotNull(sysUserExtend);
+            Assert.assertNotNull(sysUserExtend.getSysRole());
         } finally {
             sqlSession.close();
         }

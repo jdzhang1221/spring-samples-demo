@@ -3,6 +3,7 @@ package com.jdzhang1221.mybatissample.mapper;
 import com.jdzhang1221.mybatissample.model.SysRole;
 import com.jdzhang1221.mybatissample.model.SysRoleExtend;
 import com.jdzhang1221.mybatissample.model.SysUser;
+import com.jdzhang1221.mybatissample.model.SysUserExtend;
 import org.apache.ibatis.annotations.Param;
 
 import javax.management.relation.Role;
@@ -148,4 +149,11 @@ public interface UserMapper {
      * @return
      */
     int updateByMap(@Param("userMap") Map<String,Object> map);
+
+    /**
+     * 根据用户id获取用户信息和用户的角色信息
+     * @param id
+     * @return
+     */
+    SysUserExtend selectUserAndRoleByIdResultMap(Long id);
 }
