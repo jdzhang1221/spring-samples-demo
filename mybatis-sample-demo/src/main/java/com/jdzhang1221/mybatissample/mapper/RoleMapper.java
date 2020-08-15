@@ -1,6 +1,7 @@
 package com.jdzhang1221.mybatissample.mapper;
 
 import com.jdzhang1221.mybatissample.model.SysRole;
+import com.jdzhang1221.mybatissample.model.SysRoleExtend;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -44,5 +45,12 @@ public interface RoleMapper {
 
     @Delete("delete from sys_role where id=#{id}")
     int deleteById(Long id);
+
+    /**
+     * 根据用户id获取用户的角色信息
+     * @param userId
+     * @return
+     */
+    List<SysRoleExtend> selectRoleByUserIdChoose(Long userId);
 }
 

@@ -7,7 +7,9 @@
  */
 package com.jdzhang1221.mybatissample.mapper;
 
+import com.jdzhang1221.mybatissample.model.SysPrivilege;
 import com.jdzhang1221.mybatissample.model.SysRole;
+import com.jdzhang1221.mybatissample.model.SysRoleExtend;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Test;
@@ -107,6 +109,38 @@ public class RoleMapperTest extends BaseMapperTest{
             Assert.assertNull(roleMapper.selectById(1L));
         } finally {
             sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectRoleByUserIdChoose(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            RoleMapper roleMapper=sqlSession.getMapper(RoleMapper.class);
+            //将id=2的角色enabled赋值0
+            SysRole sysRole=roleMapper.selectById(2L);
+            sysRole.setEnabled(0);
+            roleMapper.updateById(sysRole);
+
+            //获取用户id为1的角色
+            List<SysRoleExtend> sysRoleExtendList=roleMapper.selectRoleByUserIdChoose(1L);
+            for (SysRoleExtend sysRoleExtend:sysRoleExtendList){
+                System.out.println("角色名："+sysRoleExtend.getRoleName());
+                if(sysRoleExtend.getId().equals(1L)){
+                    //第一个角色存在权限信息
+                    Assert.assertNotNull(sysRoleExtend.getSysPrivilegeList());
+                }else if(sysRoleExtend.getId().equals(2L))
+                {
+                    //第二个角色的权限为null
+                    Assert.assertNull(sysRoleExtend.getSysPrivilegeList());
+                    continue;
+                }
+                for (SysPrivilege sysPrivilege:sysRoleExtend.getSysPrivilegeList()){
+                    System.out.println("权限名："+sysPrivilege.getPrivilegeName());
+                }
+            }
+        } finally {
             sqlSession.close();
         }
     }
