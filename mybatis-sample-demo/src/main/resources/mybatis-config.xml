@@ -12,6 +12,12 @@
     <typeAliases>
         <package name="com.jdzhang1221.mybatissample.model"/>
     </typeAliases>
+    <typeHandlers>
+        <!--<typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler"-->
+                     <!--javaType="com.jdzhang1221.mybatissample.type.Enabled"/>-->
+        <typeHandler handler="com.jdzhang1221.mybatissample.type.EnabledTypeHandler"
+                     javaType="com.jdzhang1221.mybatissample.type.Enabled"/>
+    </typeHandlers>
 
     <environments default="development">
         <environment id="development">

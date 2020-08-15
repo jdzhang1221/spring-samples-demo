@@ -10,6 +10,7 @@ package com.jdzhang1221.mybatissample.mapper;
 import com.jdzhang1221.mybatissample.model.SysPrivilege;
 import com.jdzhang1221.mybatissample.model.SysRole;
 import com.jdzhang1221.mybatissample.model.SysRoleExtend;
+import com.jdzhang1221.mybatissample.type.Enabled;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Test;
@@ -69,7 +70,7 @@ public class RoleMapperTest extends BaseMapperTest{
             RoleMapper roleMapper=sqlSession.getMapper(RoleMapper.class);
             SysRole sysRole=new SysRole();
             sysRole.setRoleName("test_insert");
-            sysRole.setEnabled(1);
+            sysRole.setEnabled(Enabled.enabled);
             sysRole.setCreateBy(1L);
             sysRole.setCreateTime(new Date());
             int result= roleMapper.insertUseSelectKey(sysRole);
@@ -120,7 +121,7 @@ public class RoleMapperTest extends BaseMapperTest{
             RoleMapper roleMapper=sqlSession.getMapper(RoleMapper.class);
             //将id=2的角色enabled赋值0
             SysRole sysRole=roleMapper.selectById(2L);
-            sysRole.setEnabled(0);
+            sysRole.setEnabled(Enabled.disabled);
             roleMapper.updateById(sysRole);
 
             //获取用户id为1的角色
@@ -142,6 +143,32 @@ public class RoleMapperTest extends BaseMapperTest{
             }
         } finally {
             sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testUpdateById(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            RoleMapper roleMapper=sqlSession.getMapper(RoleMapper.class);
+            SysRole sysRole=roleMapper.selectById(2L);
+            //Assert.assertEquals(Enabled.enabled,sysRole.getEnabled());
+
+            sysRole.setEnabled(Enabled.disabled);
+            if(sysRole.getEnabled()==Enabled.enabled || sysRole.getEnabled()==Enabled.disabled){
+                roleMapper.updateById(sysRole);
+
+                sysRole=roleMapper.selectById(2L);
+                Assert.assertEquals(Enabled.disabled,sysRole.getEnabled());
+            }
+            else{
+                throw new Exception("无效的enabled值");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+
         }
     }
 }

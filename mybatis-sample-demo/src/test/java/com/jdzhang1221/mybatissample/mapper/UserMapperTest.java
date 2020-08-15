@@ -8,6 +8,7 @@
 package com.jdzhang1221.mybatissample.mapper;
 
 import com.jdzhang1221.mybatissample.model.*;
+import com.jdzhang1221.mybatissample.type.Enabled;
 import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -90,7 +91,7 @@ public class UserMapperTest extends BaseMapperTest {
             SysUser sysUser=new SysUser();
             sysUser.setId(1L);
             SysRole sysRole=new SysRole();
-            sysRole.setEnabled(1);
+            sysRole.setEnabled(Enabled.enabled);
             List<SysRole> sysRoleList= userMapper.selectRolesByUserAndRole(sysUser,sysRole);
             Assert.assertNotNull(sysRoleList);
             Assert.assertTrue(sysRoleList.size()>0);
