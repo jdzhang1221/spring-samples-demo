@@ -8,6 +8,7 @@
 package com.jdzhang1221.mybatissample.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhangjundong
@@ -78,6 +79,19 @@ public class SysRole {
 
     public Integer getEnabled() {
         return enabled;
+    }
+
+    /**
+     * 角色包含的权限列表
+     */
+    List<SysPrivilege> privilegeList;
+
+    public List<SysPrivilege> getPrivilegeList() {
+        return privilegeList;
+    }
+
+    public void setPrivilegeList(List<SysPrivilege> privilegeList) {
+        this.privilegeList = privilegeList;
     }
 
     public void setEnabled(Integer enabled) {

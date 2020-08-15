@@ -7,10 +7,7 @@
  */
 package com.jdzhang1221.mybatissample.mapper;
 
-import com.jdzhang1221.mybatissample.model.SysRole;
-import com.jdzhang1221.mybatissample.model.SysRoleExtend;
-import com.jdzhang1221.mybatissample.model.SysUser;
-import com.jdzhang1221.mybatissample.model.SysUserExtend;
+import com.jdzhang1221.mybatissample.model.*;
 import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -476,11 +473,33 @@ public class UserMapperTest extends BaseMapperTest {
             List<SysUserExtend> sysUserExtendList= userMapper.selectAllUserAndRoles();
             System.out.println("用户数"+sysUserExtendList.size());
             for (SysUserExtend sysUserExtend:sysUserExtendList){
-                System.out.println("用户名"+sysUserExtend.getUserName());
-                for (SysRole sysRole:sysUserExtend.getSysRoleList()){
-                    System.out.println("角色名"+sysRole.getRoleName());
+                System.out.println("用户名:"+sysUserExtend.getUserName());
+                for (SysRoleExtend sysRole:sysUserExtend.getSysRoleList()){
+                    System.out.println("角色名:"+sysRole.getRoleName());
+                    for (SysPrivilege sysPrivilege:sysRole.getSysPrivilegeList()){
+                        System.out.println("权限名:"+sysPrivilege.getPrivilegeName());
+                    }
                 }
             }
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectAllUserAndRolesSelect(){
+        SqlSession sqlSession=getSqlSession();
+        try {
+            UserMapper userMapper=sqlSession.getMapper(UserMapper.class);
+            SysUserExtend sysUserExtend= userMapper.selectAllUserAndRolesSelect(1L);
+                System.out.println("用户名:"+sysUserExtend.getUserName());
+                for (SysRoleExtend sysRole:sysUserExtend.getSysRoleList()){
+                    System.out.println("角色名:"+sysRole.getRoleName());
+                    for (SysPrivilege sysPrivilege:sysRole.getSysPrivilegeList()){
+                        System.out.println("权限名:"+sysPrivilege.getPrivilegeName());
+                    }
+                }
+
         } finally {
             sqlSession.close();
         }
