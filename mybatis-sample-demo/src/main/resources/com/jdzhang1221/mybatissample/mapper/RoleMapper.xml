@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdzhang1221.mybatissample.mapper.RoleMapper">
+    <cache
+    eviction="FIFO"
+    flushInterval="60000"
+    size="512"
+    readOnly="false"
+    />
+<!--<cache-ref namespace="com.jdzhang1221.mybatissample.mapper.RoleMapper"/>-->
     <resultMap id="roleMap" type="com.jdzhang1221.mybatissample.model.SysRole">
         <id property="id" column="id"/>
         <result property="roleName" column="role_name"/>

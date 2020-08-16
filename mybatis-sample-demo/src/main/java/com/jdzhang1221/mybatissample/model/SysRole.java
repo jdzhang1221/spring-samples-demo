@@ -9,6 +9,7 @@ package com.jdzhang1221.mybatissample.model;
 
 import com.jdzhang1221.mybatissample.type.Enabled;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * @author zhangjundong
  * @date 2020/8/815:50
  */
-public class SysRole {
+public class SysRole implements Serializable {
     /**
      * 角色ID
      */

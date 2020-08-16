@@ -137,6 +137,10 @@
         select * from sys_user where id=#{id}
     </select>
 
+    <!--<select id="selectById" flushCache="true" resultMap="usermap">-->
+        <!--select * from sys_user where id=#{id}-->
+    <!--</select>-->
+
     <select id="selectAll" resultType="com.jdzhang1221.mybatissample.model.SysUser">
         select id,
         user_name userName,
