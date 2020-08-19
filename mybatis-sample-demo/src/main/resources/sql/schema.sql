@@ -10,7 +10,7 @@ primary key (id)
 
 insert country (countryname,countrycode)
 values ('中国','CN'),('美国','US'),('俄罗斯','RU'),
-('英国','GB'),('法国','FR')
+('英国','GB'),('法国','FR');
 
 #mybatis 第二章
 create table sys_user(
@@ -22,7 +22,7 @@ user_info text comment '简介',
 head_img blob comment '头像',
 create_time datetime comment '创建时间',
 primary key(id)
-)
+);
 alter table sys_user comment '用户表';
 
 create table sys_role(
